@@ -17,7 +17,6 @@ function App() {
       setTimeout(() => setWarning(''), 2000); 
     };
 
-    // Function to restrict Ctrl+Shift+I (Developer Tools) and show warning
     const handleKeydown = (event) => {
       if (event.ctrlKey && event.shiftKey && event.key === 'I') {
         event.preventDefault();

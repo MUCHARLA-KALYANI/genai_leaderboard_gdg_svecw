@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Logo from "../../assets/gdg-sharp.svg";
+import Logo from "../../assets/GDG.webp";
 import "./nav.css";
-import { Link } from 'react-router-dom';
 import { MoonLoader, PulseLoader } from 'react-spinners';
+import Papa from 'papaparse';
 
 const Nav = () => {
   const [data, setData] = useState({
@@ -15,15 +15,38 @@ const Nav = () => {
 
   const [loading, setLoading] = useState(true);  
 
+  // URL to the published CSV
+  const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTnXptz-ItgkK8p6uXeuRO3v9xIeBiXQ4ftYfqhVOEptT0I6bBixaEnVPQp5YLcDc80Gl3cpDPPLzer/pub?gid=734950026&single=true&output=csv';
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);  
       try {
-        const response = await axios.get("ENTER_YOUR_WEB_APP_URL"); // Use your Apps Script Web App URL here
-        setData(response.data);
+        // Fetching CSV data
+        const response = await axios.get(csvUrl);
+        const csvData = response.data;
+
+        // Parsing CSV data
+        Papa.parse(csvData, {
+          header: true,
+          complete: (results) => {
+            const parsedData = results.data;
+            const enrolled = parsedData.length; // Total participants enrolled
+            const arcade = parsedData.filter(row => row['Access Code Redemption Status'] === 'Yes').length; // Count of participants who completed Arcade
+            const completed = parsedData.filter(row => row['All Skill Badges & Games Completed'] === 'Yes').length; // Count of participants who completed skill badges
+            
+            const currentTime = new Date().toLocaleString(); // Get current time
+            
+            setData({ time: currentTime, arcade, enrolled, completed });
+            setLoading(false);
+          },
+          error: (error) => {
+            console.error('Error parsing CSV:', error);
+            setLoading(false);
+          }
+        });
       } catch (error) {
         console.error('Error fetching data:', error);
-      } finally {
         setLoading(false);  
       }
     };
@@ -40,19 +63,12 @@ const Nav = () => {
         </div>
 
         <div className="time">
-          Last Updated: {data.time || <PulseLoader size={5} /> }
+          Last Updated: {data.time || <PulseLoader size={5} />}
         </div>
       </div>
 
-      {/* <div className="links_container">
-        <Link to="/"><p>GenAI & Arcade Leaderboard</p></Link>
-        <Link to="/terms"><p>Terms & Conditions</p></Link>
-        <Link to="/team"><p>Team GDG On Campus </p></Link>
-        <Link to="/contact" ><p>Join Community | Contact us</p></Link>
-      </div> */}
-
       <div className="live">
-        GenAI Study Jams & GenAI Arcade is Live !!
+        GenAI Study Jams & GenAI Arcade is Live!!
       </div>
 
       <div className="analytics">

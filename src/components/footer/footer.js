@@ -6,7 +6,7 @@ const footer = () => {
   return (
     <>
       <p className='footer'>
-        This website is developed by &nbsp; <Link to="https://www.linkedin.com/in/mhimanuhu">Manu Sharma</Link>
+        This website is developed by &nbsp; <Link to="https://www.linkedin.com/company/gdg-svecw/">GDG-SVECW</Link>
       </p>
     </>
   )
