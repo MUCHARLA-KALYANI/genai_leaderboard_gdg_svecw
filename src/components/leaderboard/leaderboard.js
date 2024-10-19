@@ -7,6 +7,8 @@ function Leaderboard() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(''); // State for the search term
+  const [sortColumn, setSortColumn] = useState('User Name'); // Default sort column
+  const [sortDirection, setSortDirection] = useState('asc'); // Default sort direction
 
   // URL to the published CSV
   const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTnXptz-ItgkK8p6uXeuRO3v9xIeBiXQ4ftYfqhVOEptT0I6bBixaEnVPQp5YLcDc80Gl3cpDPPLzer/pub?gid=734950026&single=true&output=csv';
@@ -42,12 +44,40 @@ function Leaderboard() {
     row['User Name']?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Sort the filtered data based on skill badges completed or any other metric
+  // Sort the filtered data based on the selected column and direction
   const sortedData = filteredData.sort((a, b) => {
-    return (
-      parseInt(b['# of Skill Badges Completed']) - parseInt(a['# of Skill Badges Completed'])
-    );
+    const aValue = a[sortColumn];
+    const bValue = b[sortColumn];
+
+    // Handle numerical sorting
+    const aNum = parseInt(aValue) || 0;
+    const bNum = parseInt(bValue) || 0;
+
+    if (sortDirection === 'asc') {
+      return aNum - bNum || aValue.localeCompare(bValue);
+    } else {
+      return bNum - aNum || bValue.localeCompare(aValue);
+    }
   });
+
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      // Toggle sort direction if the same column is clicked
+      setSortDirection((prevDirection) => (prevDirection === 'asc' ? 'desc' : 'asc'));
+    } else {
+      // Set new column to sort and reset to ascending
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  };
+
+  // Function to render the sort arrow based on the current sort state
+  const renderSortArrow = (column) => {
+    if (sortColumn === column) {
+      return sortDirection === 'asc' ? ' ▲' : ' ▼'; // Arrow indicators for ascending and descending
+    }
+    return ''; // No arrow if not sorting by this column
+  };
 
   return (
     <>
@@ -70,13 +100,13 @@ function Leaderboard() {
           <table className="leaderboard-table">
             <thead>
               <tr>
-                <th>Rank</th>
-                <th>Name</th>
-                <th className="email-column">User Email</th>
-                <th>Access Code Redemption</th>
-                <th>All Skill Badges & Games Completed</th>
-                <th>No of Skill Badges Completed</th>
-                <th>No of Arcade Games Completed</th>
+                <th onClick={() => handleSort('Sr No.')}>Rank{renderSortArrow('Sr No.')}</th>
+                <th onClick={() => handleSort('User Name')}>Name{renderSortArrow('User Name')}</th>
+                <th className="email-column" onClick={() => handleSort('User Email')}>User Email{renderSortArrow('User Email')}</th>
+                <th onClick={() => handleSort('Access Code Redemption Status')}>Access Code Redemption{renderSortArrow('Access Code Redemption Status')}</th>
+                <th onClick={() => handleSort('All Skill Badges & Games Completed')}>All Skill Badges & Games Completed{renderSortArrow('All Skill Badges & Games Completed')}</th>
+                <th onClick={() => handleSort('# of Skill Badges Completed')}>No of Skill Badges Completed{renderSortArrow('# of Skill Badges Completed')}</th>
+                <th onClick={() => handleSort('# of Arcade Games Completed')}>No of Arcade Games Completed{renderSortArrow('# of Arcade Games Completed')}</th>
               </tr>
             </thead>
             <tbody>

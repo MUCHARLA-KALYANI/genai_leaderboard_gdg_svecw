@@ -1,12 +1,12 @@
-
 .leaderboard-container {
     margin: 0 auto;
     padding: 20px;
     background-color: #aaff0013;
-    overflow-y: scroll;
-    
+    overflow-y: auto; /* Changed from scroll to auto for better UX */
+    max-height: 600px; /* Added a max height for the container */
+    border-radius: 8px; /* Added border radius for smoother corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Added shadow for depth */
 }
-  
 
 .leaderboard-title {
     text-align: center;
@@ -21,17 +21,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 .search-box {
-    width:90%;
+    width: 90%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ddd;
     border-radius: 5px;
     outline: none;
-
 }
 
 .search-box:focus {
@@ -42,7 +40,8 @@
     text-align: center;
     color: #333;
 }
-.Loadingdata{
+
+.Loadingdata {
     text-align: center;
 }
 
@@ -50,38 +49,46 @@
     margin: 0 auto;
     border-collapse: collapse;
     background-color: #fff;
+    max-width: 100%; /* Ensures the table doesn't overflow */
     height: 400px;
 }
 
 .leaderboard-table th, .leaderboard-table td {
-    
     text-align: left;
     border-bottom: 1px solid #ddd;
     color: #1d1d1d; 
     font-size: 15px;
     border-right: 1px solid rgb(255, 255, 255);
-
 }
-
 
 .leaderboard-table th {
     background-color: #1818a9; 
     color: white; 
     font-weight: 400;
     padding: 12px;
+    position: relative; /* Needed for sorting arrows */
+}
+
+.leaderboard-table th::after {
+    content: ''; /* Placeholder for sort arrow */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.8em; /* Size of the sorting arrows */
+    color: white; /* Color of the sorting arrows */
 }
 
 .leaderboard-table tr:nth-child(even) {
     background-color: #1010c523; 
 }
 
-
 .centered-cell {
     text-align: center;
 }
 
 .yes-cell {
-    background: linear-gradient(-45deg,#aa9a437e ,#ffd9007e); 
+    background: linear-gradient(-45deg, #aa9a437e, #ffd9007e); 
     color: #000000; 
     width: fit-content;
     padding: 5px 10px;
@@ -89,48 +96,57 @@
     font-size: 12px;
     margin: 0 auto;
 }
-.leaderboard-table td:nth-child(1), .leaderboard-table td:nth-child(2),.leaderboard-table td:nth-child(3),.leaderboard-table td:nth-child(6) {
+
+.leaderboard-table td:nth-child(1), 
+.leaderboard-table td:nth-child(2),
+.leaderboard-table td:nth-child(3),
+.leaderboard-table td:nth-child(6) {
     padding-left: 8px;
 }
-.leaderboard-table td{
-    padding: 10px 3px ;
+
+.leaderboard-table td {
+    padding: 10px 3px;
 }
 
-.leaderboard-table td:nth-child(2) , .leaderboard-table td:nth-child(3){
-    width:200px;
+.leaderboard-table td:nth-child(2), 
+.leaderboard-table td:nth-child(3) {
+    width: 200px;
 }
-.leaderboard-table td:nth-child(7){
-    width:80px;
-}
-.leaderboard-table td:nth-child(5), .leaderboard-table td:nth-child(4),.leaderboard-table td:nth-child(6){
+
+.leaderboard-table td:nth-child(7) {
     width: 80px;
 }
-.no-cell {
-    background:linear-gradient(-45deg, #fd081d7c, #2110126d); 
-    color: #000000; 
 
+.leaderboard-table td:nth-child(5), 
+.leaderboard-table td:nth-child(4), 
+.leaderboard-table td:nth-child(6) {
+    width: 80px;
+}
+
+.no-cell {
+    background: linear-gradient(-45deg, #fd081d7c, #2110126d); 
+    color: #000000; 
     width: fit-content;
     padding: 5px 10px;
     border-radius: 5px;
     margin: 0 auto;
     font-size: 12px;
 }
-
 
 .leaderboard-table tr:hover {
     background-color: #e9f4ff; 
+    transition: background-color 0.3s ease; /* Smooth transition on hover */
 }
+
 .email-column {
     display: table-cell;
-  }
-  
- 
-  @media (max-width: 768px) {
+}
+
+@media (max-width: 768px) {
     .email-column {
-      display: none;
+        display: none;
     }
-  }
-@media screen and (max-width: 768px) {
+    
     .leaderboard-title {
         font-size: 1.5em;
     }
@@ -139,32 +155,15 @@
         width: 100%;
         font-size: 14px;
     }
-    .yes-cell {
-        background: linear-gradient(-45deg,#aa9a437e ,#ffd9007e); /* Light green background */
-        color: #000000; 
-        width: fit-content;
+
+    .yes-cell, .no-cell {
         padding: 3px 7px;
-        border-radius: 5px;
-        font-size: 8px;
-        margin: 0 auto;
-    }
-    .no-cell {
-        background:linear-gradient(-45deg, #fd081d7c, #2110126d); /* Light red background */
-        color: #000000;
-        font-weight: bold;
-        width: fit-content;
-        padding: 3px 7px;
-        border-radius: 5px;
-        margin: 0 auto;
-        font-size: 8px;
+        font-size: 8px; /* Reduced font size for smaller screens */
     }
 
-    .leaderboard-table th, .leaderboard-table td {
+    .leaderboard-table th, 
+    .leaderboard-table td {
         font-size: 10px;
         padding: 8px; 
-    }
-    
-    .leaderboard-table th {
-        font-size: 10px;
     }
 }

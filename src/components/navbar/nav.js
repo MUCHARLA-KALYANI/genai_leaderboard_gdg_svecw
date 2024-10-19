@@ -11,6 +11,7 @@ const Nav = () => {
     arcade: 0,
     enrolled: 0,
     completed: 0,
+    allComplete: 0, // Ensure allComplete is included in state
   });
 
   const [loading, setLoading] = useState(true);  
@@ -32,12 +33,17 @@ const Nav = () => {
           complete: (results) => {
             const parsedData = results.data;
             const enrolled = parsedData.length; // Total participants enrolled
-            const arcade = parsedData.filter(row => row['Access Code Redemption Status'] === 'Yes').length; // Count of participants who completed Arcade
-            const completed = parsedData.filter(row => row['All Skill Badges & Games Completed'] === 'Yes').length; // Count of participants who completed skill badges
+            const arcade = parsedData.filter(row => row['# of Arcade Games Completed'] === '1').length; 
+            const completed = parsedData.filter(row => row['# of Skill Badges Completed'] === '15').length; // Count of participants who completed skill badges
+            const allComplete = parsedData.filter(row => 
+              row['# of Arcade Games Completed'] === '1' && 
+              row['# of Skill Badges Completed'] === '15'
+            ).length; // Count of participants who completed both
             
             const currentTime = new Date().toLocaleString(); // Get current time
             
-            setData({ time: currentTime, arcade, enrolled, completed });
+            // Update state with all values, including allComplete
+            setData({ time: currentTime, arcade, enrolled, completed, allComplete });
             setLoading(false);
           },
           error: (error) => {
@@ -85,6 +91,11 @@ const Nav = () => {
         <div className="data_card">
           <div>No of participants completed 15 Skill Badges</div>
           <p>{loading ? <MoonLoader size={10} /> : data.completed}</p>
+        </div>
+
+        <div className="data_card">
+          <div>No of participants completed Arcade and 15 Skill Badges</div>
+          <p>{loading ? <MoonLoader size={10} /> : data.allComplete}</p> {/* Use data.allComplete */}
         </div>
       </div>
     </>
