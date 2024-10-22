@@ -11,7 +11,7 @@ function Leaderboard() {
   const [sortDirection, setSortDirection] = useState('asc'); // Default sort direction
 
   // URL to the published CSV
-  const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTnXptz-ItgkK8p6uXeuRO3v9xIeBiXQ4ftYfqhVOEptT0I6bBixaEnVPQp5YLcDc80Gl3cpDPPLzer/pub?gid=734950026&single=true&output=csv';
+  const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRWF3kSOVn972jyMvsVo-vCNS4OJDbZ01g_NbxG-sNE33k4QxD3cLL8LTFU422qnzeAhJOYfV0Mb5SU/pub?output=csv';
 
   useEffect(() => {
     const fetchData = async () => {
